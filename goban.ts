@@ -1,5 +1,5 @@
 namespace testbench {
-    export class Marks {
+    export class SVGGobanItemsCollection {
         private tag: string; // can be null; the "id" attribute for <use xlink:href="#ID">
 
         constructor(private svg: SVGGobanElement, private update: (x: number, y: number) => void, private def: string) {
@@ -86,14 +86,14 @@ namespace testbench {
     }
 
     export interface SVGGobanElement extends HTMLElement {
-        AB: Marks; // black stone
-        AW: Marks; // white stone
-        CR: Marks; // circle
-        TR: Marks; // triangle
-        SQ: Marks; // square
-        MA: Marks; // cross
-        SL: Marks; // selection
-        LB: Marks; // text label
+        AB: SVGGobanItemsCollection; // black stone
+        AW: SVGGobanItemsCollection; // white stone
+        CR: SVGGobanItemsCollection; // circle
+        TR: SVGGobanItemsCollection; // triangle
+        SQ: SVGGobanItemsCollection; // square
+        MA: SVGGobanItemsCollection; // cross
+        SL: SVGGobanItemsCollection; // selection
+        LB: SVGGobanItemsCollection; // text label
 
         addEventListener(type: "click", listener: (ev: GobanMouseEvent) => any, useCapture?: boolean): void;
         addEventListener(type: "mousedown", listener: (ev: GobanMouseEvent) => any, useCapture?: boolean): void;
@@ -133,14 +133,14 @@ namespace testbench {
             div.removeChild(svg);
 
             Object.assign(svg, {
-                AB: new Marks(svg, update, '<circle id="AB" r="0.475" fill="black" stroke="black" stroke-width="0.05"></circle>'),
-                AW: new Marks(svg, update, '<circle id="AW" r="0.475" fill="white" stroke="black" stroke-width="0.05"></circle>'),
-                CR: new Marks(svg, update, '<circle id="CR" r="0.5" stroke="none" transform="scale(0.4)"></circle>'),
-                TR: new Marks(svg, update, '<path id="TR" d="M 0 -0.5 L -0.433 0.25 L 0.433 0.25 Z" stroke="none" transform="scale(0.5)"></path>'),
-                MA: new Marks(svg, update, '<path id="MA" d="M -0.2 -0.2 L 0.2 0.2 M 0.2 -0.2 L -0.2 0.2" stroke-width="0.05"></path>'),
-                SQ: new Marks(svg, update, '<rect id="SQ" x="-0.5" y="-0.5" width="1" height="1" stroke="none" transform="scale(0.4)"></rect>'),
-                SL: new Marks(svg, update, '<rect id="SL" x="-0.5" y="-0.5" width="1" height="1" fill-opacity="0.5" stroke="none"></rect>'),
-                LB: new Marks(svg, update, `<text x="" y="" font-size="0.3" text-anchor="middle" dominant-baseline="middle" stroke-width="0"></text>`),
+                AB: new SVGGobanItemsCollection(svg, update, '<circle id="AB" r="0.475" fill="black" stroke="black" stroke-width="0.05"></circle>'),
+                AW: new SVGGobanItemsCollection(svg, update, '<circle id="AW" r="0.475" fill="white" stroke="black" stroke-width="0.05"></circle>'),
+                CR: new SVGGobanItemsCollection(svg, update, '<circle id="CR" r="0.5" stroke="none" transform="scale(0.4)"></circle>'),
+                TR: new SVGGobanItemsCollection(svg, update, '<path id="TR" d="M 0 -0.5 L -0.433 0.25 L 0.433 0.25 Z" stroke="none" transform="scale(0.5)"></path>'),
+                MA: new SVGGobanItemsCollection(svg, update, '<path id="MA" d="M -0.2 -0.2 L 0.2 0.2 M 0.2 -0.2 L -0.2 0.2" stroke-width="0.05"></path>'),
+                SQ: new SVGGobanItemsCollection(svg, update, '<rect id="SQ" x="-0.5" y="-0.5" width="1" height="1" stroke="none" transform="scale(0.4)"></rect>'),
+                SL: new SVGGobanItemsCollection(svg, update, '<rect id="SL" x="-0.5" y="-0.5" width="1" height="1" fill-opacity="0.5" stroke="none"></rect>'),
+                LB: new SVGGobanItemsCollection(svg, update, `<text x="" y="" font-size="0.3" text-anchor="middle" dominant-baseline="middle" stroke-width="0"></text>`),
             });
 
             // invoked after a marker has been added or removed
@@ -150,7 +150,7 @@ namespace testbench {
                 for (const mark in svg) {
                     if (/^[A-Z]{2}$/.test(mark) && !/AB|AW|SL/.test(mark)) {
                         try {
-                            const item = (<Marks>svg[mark]).get(x, y);
+                            const item = (<SVGGobanItemsCollection>svg[mark]).get(x, y);
 
                             if (item) {
                                 item.setAttribute('stroke', color);

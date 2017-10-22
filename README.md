@@ -2,7 +2,10 @@
 
 `npm run build`
 
-This produces a `goban.js` in the current directory.
+This produces two files in the current directory:
+
+1. `goban.js`
+1. `goban.d.ts` with the interface
 
 # API
 
