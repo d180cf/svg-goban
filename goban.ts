@@ -1,5 +1,5 @@
 namespace testbench {
-    class Marks {
+    export class Marks {
         private tag: string; // can be null; the "id" attribute for <use xlink:href="#ID">
 
         constructor(private svg: SVGGobanElement, private update: (x: number, y: number) => void, private def: string) {
