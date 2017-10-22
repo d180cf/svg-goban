@@ -18,18 +18,18 @@ namespace testbench {
             }
         }
 
-        private *nodes() {
+        private *nodes(): Iterable<HTMLElement> {
             if (this.tag) {
-                const refs = $(this.svg).find(`use`).toArray();
+                const refs = this.svg.querySelectorAll('use');
 
                 for (let i = 0; i < refs.length; i++)
                     if (refs[i].getAttribute('xlink:href') == '#' + this.tag)
-                        yield refs[i];
+                        yield <any>refs[i];
             } else {
                 const type = /^<(\w+) /.exec(this.def)[1];
-                const refs = $(this.svg).find(type).toArray();
+                const refs = this.svg.querySelectorAll(type);
 
-                yield* refs;
+                yield* <any>refs;
             }
         }
 
@@ -165,26 +165,21 @@ namespace testbench {
 
             // upper letters: A, B, C, ...
             for (let x = 0; x < n; x++) {
-                const label = stone.cc.toString(stone.make(x, 0, 0), n)[0];
+                const label = String.fromCharCode(0x41 + x);
                 svg.LB.add(x, -0.7, label);
             }
 
             // left digits: 9, 8, 7, ...
             for (let y = 0; y < n; y++) {
-                const label = stone.cc.toString(stone.make(0, y, 0), n).slice(1);
+                const label = n - y + '';
                 svg.LB.add(-0.7, y, label);
             }
 
             // lower labels: a, b, c, ...
             for (let x = 0; x < n; x++) {
-                const label = stone.toString(stone.make(x, 0, 0))[1];
+                const label = String.fromCharCode(0x61 + x);
                 svg.LB.add(x, n - 1 + 0.7, label);
-            }
-
-            // right letters: a, b, c, ...
-            for (let y = 0; y < n; y++) {
-                const label = stone.toString(stone.make(0, y, 0))[2];
-                svg.LB.add(n - 1 + 0.7, y, label);
+                svg.LB.add(n - 1 + 0.7, x, label);
             }
 
             function getStoneCoords(event: MouseEvent) {
