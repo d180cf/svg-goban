@@ -71,6 +71,8 @@ namespace testbench {
                 this.svg.removeChild(ref);
                 this.update(x, y);
             }
+
+            this.elements = {};
         }
     }
 
