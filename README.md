@@ -1,9 +1,13 @@
 # Build
 
-1. `npm install`
+1. `npm i`
 1. `npm run build`
 
+This produces a `goban.js` in the current directory.
+
 # API
+
+Assuming the `goban.js` file is included:
 
 ```js
 const gb = SVGGobanElement.create(9); // creates a 9x9 board

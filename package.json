@@ -1,0 +1,12 @@
+{
+    "name": "svg-goban",
+    "description": "The SVG go board used in the tsumego solver app",
+    "version": "1.0.0",
+    "devDependencies": {
+      "typescript": "2.0.0"
+    },
+    "scripts": {
+      "build": "tsc"
+    }
+  }
+  
