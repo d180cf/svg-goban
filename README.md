@@ -1,7 +1,6 @@
 # Build
 
-1. `npm i`
-1. `npm run build`
+`npm run build`
 
 This produces a `goban.js` in the current directory.
 
