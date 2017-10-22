@@ -1,6 +1,7 @@
 namespace testbench {
     export class SVGGobanItemsCollection {
         private tag: string; // can be null; the "id" attribute for <use xlink:href="#ID">
+        private elements: { [coords: string]: HTMLElement } = {}; // elements["2,7"] = <...>
 
         constructor(private svg: SVGGobanElement, private update: (x: number, y: number) => void, private def: string) {
             try {
@@ -18,25 +19,10 @@ namespace testbench {
             }
         }
 
-        private *nodes(): Iterable<HTMLElement> {
-            if (this.tag) {
-                const refs = this.svg.querySelectorAll('use');
-
-                for (let i = 0; i < refs.length; i++)
-                    if (refs[i].getAttribute('xlink:href') == '#' + this.tag)
-                        yield <any>refs[i];
-            } else {
-                const type = /^<(\w+) /.exec(this.def)[1];
-                const refs = this.svg.querySelectorAll(type);
-
-                yield* <any>refs;
-            }
-        }
-
         get(x: number, y: number): HTMLElement {
-            for (const ref of this.nodes())
-                if (+ref.getAttribute('x') == x && +ref.getAttribute('y') == y)
-                    return ref;
+            for (const coords in this.elements)
+                if (x + ',' + y == coords)
+                    return this.elements[coords];
 
             return null;
         }
@@ -55,7 +41,7 @@ namespace testbench {
 
             g.removeChild(m);
             this.svg.appendChild(m);
-
+            this.elements[x + ',' + y] = m;
             this.update(x, y);
             return m;
         }
@@ -64,6 +50,7 @@ namespace testbench {
             const ref = this.get(x, y);
             if (!ref) return;
             this.svg.removeChild(ref);
+            delete this.elements[x + ',' + y];
             this.update(x, y);
         }
 
@@ -75,7 +62,9 @@ namespace testbench {
         }
 
         clear() {
-            for (const ref of this.nodes()) {
+            for (const coords in this.elements) {
+                const ref = this.elements[coords];
+
                 const x = +ref.getAttribute('x');
                 const y = +ref.getAttribute('y');
 
