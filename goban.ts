@@ -163,9 +163,9 @@ namespace testbench {
                 }
             }
 
-            // upper letters: A, B, C, ...
+            // upper letters: A, B, C, ... (I is skipped)
             for (let x = 0; x < n; x++) {
-                const label = String.fromCharCode(0x41 + x);
+                const label = String.fromCharCode(0x41 + x + (x > 7 ? 1 : 0));
                 svg.LB.add(x, -0.7, label);
             }
 
